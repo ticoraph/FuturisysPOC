@@ -1,7 +1,15 @@
+fastapi
 fastapi[standard]
 pydantic
+pydantic_settings
 uvicorn
 scikit-learn
 pandas
 numpy
 joblib
+SQLAlchemy
+pytest
+pytest-cov
+python-dotenv
+requests
+psycopg2
