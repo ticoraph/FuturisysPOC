@@ -75,4 +75,4 @@ jobs:
         # Installation de pytest et du plugin de couverture de code
         pip install pytest pytest-cov
         # Exécution des tests avec génération de rapports de couverture (XML et HTML)
-        pytest test/test_predict.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        pytest test/test_api.py --cov=src --cov-report=html
