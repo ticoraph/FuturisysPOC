@@ -126,6 +126,3 @@ Data Analyst | Python
 - User authentication
 - Report export functionality
 
----
-
-Made with ❤️ by a data enthusiast!
