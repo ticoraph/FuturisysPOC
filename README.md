@@ -34,11 +34,6 @@ This project is a **POC**
 │   ├── main.py             # Main API file
 ├── frontend/               # Streamlit app
 │   ├── app.py              # Main entry point
-│   ├── pages/
-│   │   ├── aba1_map.py
-│   │   ├── aba2_price.py
-│   │   ├── aba3_distance.py
-│   │   └── aba4_temporal.py
 ├── poetry.lock             # Dependencies lock file
 ├── pyproject.toml          # Project metadata and dependencies
 ├── README.md
