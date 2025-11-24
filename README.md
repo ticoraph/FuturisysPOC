@@ -13,22 +13,17 @@ This project is a **POC**
 
 ## 🔍 Features
 
-### 📊 Tab 1: **Interactive Map**
+### 📊 Tab 1: ****
 
-- Geographic visualization of filtered properties
-- Scatterplot colored by structure quality
-- Hexbin map showing property density by region
+- 
 
-### 💰 Tab 2: **Price Analysis**
+### 💰 Tab 2: ****
 
-- Geographic visualization of filtered properties
-- Scatterplot colored by structure quality
-- Hexbin map showing property density by region
+- 
 
 ### ⚙️ Filters
 
-- Price range
-
+- 
 ---
 
 ## 🚧 Project Structure
