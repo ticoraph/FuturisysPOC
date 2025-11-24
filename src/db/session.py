@@ -12,7 +12,7 @@ load_dotenv()
 USER = os.getenv("postgres_user")          # Nom d'utilisateur PostgreSQL
 PASSWORD = os.getenv("postgres_user_password")  # Mot de passe PostgreSQL
 HOST = os.getenv("supabase_host")          # Adresse du serveur (ex: localhost ou IP distante)
-PORT = int(os.getenv("postgres_port", "5432"))       # Port PostgreSQL (généralement 5432)
+PORT = os.getenv("postgres_port", "5432")      # Port PostgreSQL (généralement 5432)
 DBNAME = os.getenv("postgres_db_name")      # Nom de la base de données
 
 # Construction de l'URL de connexion SQLAlchemy
