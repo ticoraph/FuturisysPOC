@@ -71,8 +71,8 @@ This project is a **POC**
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/JoaoEscorcio/Streamlit_case.git
-cd Streamlit_case
+git clone #############
+cd ###########
 ```
 
 ### 2. Create and activate a virtual environment
@@ -83,17 +83,16 @@ source .venv/bin/activate  # Linux/Mac
 .venv\Scripts\activate     # Windows
 ```
 
-### 3. Install dependencies with Poetry
+### 3. Install dependencies
 
 ```bash
-poetry install
+
 ```
 
 ### 4. Create the `.env` file
 
 ```env
-SUPABASE_URL=https://<your-project>.supabase.co
-SUPABASE_KEY=eyJhbGciOi...   # Your API Key
+
 ```
 
 ### 5. Run the API (FastAPI)
@@ -101,15 +100,6 @@ SUPABASE_KEY=eyJhbGciOi...   # Your API Key
 ```bash
 cd api
 uvicorn main:app --reload --port 8000
-```
-
-### 6. Run the Frontend (Streamlit)
-
-Open another terminal:
-
-```bash
-cd frontend
-streamlit run app.py
 ```
 
 ---
@@ -135,7 +125,6 @@ Data Analyst | Python
 
 - User authentication
 - Report export functionality
-- Price prediction using Machine Learning
 
 ---
 
