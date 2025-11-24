@@ -1,7 +1,7 @@
 import joblib
 import os
 import time
-from typing import Any
+#from typing import Any
 from dotenv import load_dotenv
 
 # Charge les variables d'environnement depuis le fichier .env

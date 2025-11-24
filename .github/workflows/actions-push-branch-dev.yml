@@ -8,7 +8,7 @@ on:
 
 jobs:
   # Job pour créer automatiquement un tag
-  create-tag-and-release:
+  create-tag:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # Permission nécessaire pour créer des releases
@@ -75,4 +75,4 @@ jobs:
         # Installation de pytest et du plugin de couverture de code
         pip install pytest pytest-cov
         # Exécution des tests avec génération de rapports de couverture (XML et HTML)
-        pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        pytest test/test_predict.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
