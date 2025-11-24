@@ -9,11 +9,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Récupération des variables de connexion à PostgreSQL
-USER = os.getenv("user")          # Nom d'utilisateur PostgreSQL
-PASSWORD = os.getenv("password")  # Mot de passe PostgreSQL
-HOST = os.getenv("host")          # Adresse du serveur (ex: localhost ou IP distante)
-PORT = os.getenv("port")          # Port PostgreSQL (généralement 5432)
-DBNAME = os.getenv("dbname")      # Nom de la base de données
+USER = os.getenv("postgres_user")          # Nom d'utilisateur PostgreSQL
+PASSWORD = os.getenv("postgres_user_password")  # Mot de passe PostgreSQL
+HOST = os.getenv("supabase_host")          # Adresse du serveur (ex: localhost ou IP distante)
+PORT = os.getenv("postgres_port")          # Port PostgreSQL (généralement 5432)
+DBNAME = os.getenv("postgres_db_name")      # Nom de la base de données
 
 # Construction de l'URL de connexion SQLAlchemy
 # Format: postgresql+psycopg2://utilisateur:motdepasse@hote:port/nombase
