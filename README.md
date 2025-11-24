@@ -125,4 +125,3 @@ Data Analyst | Python
 
 - User authentication
 - Report export functionality
-
