@@ -72,19 +72,19 @@ jobs:
 
     - name: Create .env file
       run: |
-        echo "postgres_user=${{ secrets.POSTGRES_USER }}" >> .env
+        echo "postgres_user=${{ vars.POSTGRES_USER }}" >> .env
         echo "postgres_user_password=${{ secrets.POSTGRES_USER_PASSWORD }}" >> .env
-        echo "supabase_host=${{ secrets.SUPABASE_HOST }}" >> .env
-        echo "postgres_port=${{ secrets.POSTGRES_PORT }}" >> .env
-        echo "postgres_db_name=${{ secrets.POSTGRES_DB_NAME }}" >> .env
+        echo "supabase_host=${{ vars.SUPABASE_HOST }}" >> .env
+        echo "postgres_port=${{ vars.POSTGRES_PORT }}" >> .env
+        echo "postgres_db_name=${{ vars.POSTGRES_DB_NAME }}" >> .env
 
     - name: Test with pytest
       run: |
         # Exécution des tests avec génération de rapports de couverture (XML et HTML)
         pytest test/test_api.py --cov=src --cov-report=html
       env:
-        postgres_user: ${{ secrets.POSTGRES_USER }}
+        postgres_user: ${{ vars.POSTGRES_USER }}
         postgres_user_password: ${{ secrets.POSTGRES_USER_PASSWORD }}
-        supabase_host: ${{ secrets.SUPABASE_HOST }}
-        postgres_port: ${{ secrets.POSTGRES_PORT }}
-        postgres_db_name: ${{ secrets.POSTGRES_DB_NAME }}
+        supabase_host: ${{ vars.SUPABASE_HOST }}
+        postgres_port: ${{ vars.POSTGRES_PORT }}
+        postgres_db_name: ${{ vars.POSTGRES_DB_NAME }}
