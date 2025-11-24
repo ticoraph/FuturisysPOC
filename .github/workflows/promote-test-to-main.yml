@@ -1,0 +1,31 @@
+name: Promote test → main (requires approval)
+
+on:
+  push:
+    branches:
+      - test
+
+permissions:
+  contents: write
+
+jobs:
+  create-pr-to-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create or update PR test → main (ready for review)
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: sync main with test"
+          title: "Release candidate: test → main"
+          body: |
+            PR automatique pour promotion test → main.
+            **Ne pas merger** sans approbation manuelle et checks green.
+          base: main
+          head: test
+          draft: false
