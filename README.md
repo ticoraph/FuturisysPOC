@@ -26,13 +26,35 @@ This project is a **POC**
 
 ```
 .
-├── api/                    # FastAPI - Data endpoints
-│   ├── main.py             # Main API file
-├── frontend/               # Streamlit app
-│   ├── app.py              # Main entry point
-├── poetry.lock             # Dependencies lock file
-├── pyproject.toml          # Project metadata and dependencies
 ├── README.md
+├── __pycache__
+│   └── start.cpython-312.pyc
+├── requirements.txt
+├── src
+│   ├── __pycache__
+│   ├── app_config_system.py
+│   ├── db
+│   │   ├── __pycache__
+│   │   │   ├── models.cpython-312.pyc
+│   │   │   └── session.cpython-312.pyc
+│   │   ├── commands.py
+│   │   ├── create_db.sql
+│   │   ├── models.py
+│   │   └── session.py
+│   └── model
+│       ├── __pycache__
+│       │   └── load_model.cpython-312.pyc
+│       ├── export_model.py
+│       ├── load_model.py
+│       └── model.joblib
+├── start.py
+├── test
+│   ├── __pycache__
+│   │   ├── test_predict.cpython-312-pytest-9.0.1.pyc
+│   │   └── test_predict.cpython-313-pytest-8.3.4.pyc
+│   └── test_predict.py
+└── tree.bash
+
 ```
 
 ---
