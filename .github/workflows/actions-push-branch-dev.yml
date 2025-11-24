@@ -63,13 +63,6 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        # Mise à jour de pip
-        python -m pip install --upgrade pip
-        # Installation des dépendances du projet depuis requirements.txt
-        pip install -r requirements.txt
-
     - name: Create .env file
       run: |
         echo "postgres_user=${{ vars.POSTGRES_USER }}" >> .env
@@ -81,6 +74,15 @@ jobs:
         echo "postgres_port=${{ vars.POSTGRES_PORT }}"
         echo "postgres_db_name=${{ vars.POSTGRES_DB_NAME }}" >> .env
         echo "postgres_db_name=${{ vars.POSTGRES_DB_NAME }}"
+        echo "model_path=${{ vars.MODEL_PATH }}" >> .env
+        echo "model_path=${{ vars.MODEL_PATH }}"
+
+    - name: Install dependencies
+      run: |
+        # Mise à jour de pip
+        python -m pip install --upgrade pip
+        # Installation des dépendances du projet depuis requirements.txt
+        pip install -r requirements.txt
 
     - name: Test with pytest
       run: |
