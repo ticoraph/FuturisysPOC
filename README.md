@@ -15,11 +15,7 @@ This project is a **POC**
 
 ### 📊 Tab 1: ****
 
-- 
-
-### 💰 Tab 2: ****
-
-- 
+-
 
 ### ⚙️ Filters
 
