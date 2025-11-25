@@ -1,7 +1,7 @@
 import joblib
 import os
 import time
-from typing import Any
+#from typing import Any
 from dotenv import load_dotenv
 
 # Charge les variables d'environnement depuis le fichier .env
@@ -9,14 +9,14 @@ load_dotenv()
 
 # Récupère le chemin du modèle depuis les variables d'environnement
 # Si MODEL_PATH n'existe pas, utilise "model.joblib" par défaut
-MODEL_PATH = os.getenv("MODEL_PATH", "model.joblib")
-print(f"Loading model from {MODEL_PATH}")
+model_path = os.getenv("model_path")
+print(f"Loading model from {model_path}")
 
 # Affichage d'informations de débogage pour vérifier les chemins
 print(f"Current working directory: {os.getcwd()}")
-print(f"Model path from env: {os.getenv('MODEL_PATH')}")
-print(f"Absolute model path: {os.path.abspath(MODEL_PATH)}")
-print(f"File exists: {os.path.exists(MODEL_PATH)}")
+print(f"Model path from env: {os.getenv('model_path')}")
+print(f"Absolute model path: {os.path.abspath(model_path)}")
+print(f"File exists: {os.path.exists(model_path)}")
 
 
 class LoadModel:
@@ -25,7 +25,7 @@ class LoadModel:
     Elle gère le cycle de vie du modèle : chargement, versioning et prédictions.
     """
 
-    def __init__(self, model_path: str = MODEL_PATH):
+    def __init__(self, model_path: str = model_path):
         """
         Initialise la classe et charge automatiquement le modèle.
 

@@ -26,13 +26,35 @@ This project is a **POC**
 
 ```
 .
-├── api/                    # FastAPI - Data endpoints
-│   ├── main.py             # Main API file
-├── frontend/               # Streamlit app
-│   ├── app.py              # Main entry point
-├── poetry.lock             # Dependencies lock file
-├── pyproject.toml          # Project metadata and dependencies
 ├── README.md
+├── __pycache__
+│   └── start.cpython-312.pyc
+├── requirements.txt
+├── src
+│   ├── __pycache__
+│   ├── app_config_system.py
+│   ├── db
+│   │   ├── __pycache__
+│   │   │   ├── models.cpython-312.pyc
+│   │   │   └── session.cpython-312.pyc
+│   │   ├── commands.py
+│   │   ├── create_db.sql
+│   │   ├── models.py
+│   │   └── session.py
+│   └── model
+│       ├── __pycache__
+│       │   └── load_model.cpython-312.pyc
+│       ├── export_model.py
+│       ├── load_model.py
+│       └── model.joblib
+├── start.py
+├── test
+│   ├── __pycache__
+│   │   ├── test_predict.cpython-312-pytest-9.0.1.pyc
+│   │   └── test_predict.cpython-313-pytest-8.3.4.pyc
+│   └── test_predict.py
+└── tree.bash
+
 ```
 
 ---
@@ -49,8 +71,8 @@ This project is a **POC**
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/JoaoEscorcio/Streamlit_case.git
-cd Streamlit_case
+git clone #############
+cd ###########
 ```
 
 ### 2. Create and activate a virtual environment
@@ -61,17 +83,16 @@ source .venv/bin/activate  # Linux/Mac
 .venv\Scripts\activate     # Windows
 ```
 
-### 3. Install dependencies with Poetry
+### 3. Install dependencies
 
 ```bash
-poetry install
+
 ```
 
 ### 4. Create the `.env` file
 
 ```env
-SUPABASE_URL=https://<your-project>.supabase.co
-SUPABASE_KEY=eyJhbGciOi...   # Your API Key
+
 ```
 
 ### 5. Run the API (FastAPI)
@@ -79,15 +100,6 @@ SUPABASE_KEY=eyJhbGciOi...   # Your API Key
 ```bash
 cd api
 uvicorn main:app --reload --port 8000
-```
-
-### 6. Run the Frontend (Streamlit)
-
-Open another terminal:
-
-```bash
-cd frontend
-streamlit run app.py
 ```
 
 ---
@@ -113,8 +125,3 @@ Data Analyst | Python
 
 - User authentication
 - Report export functionality
-- Price prediction using Machine Learning
-
----
-
-Made with ❤️ by a data enthusiast!
