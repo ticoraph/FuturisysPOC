@@ -123,9 +123,9 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: test
-          base: main  # Branche cible de la PR (à ajuster selon votre workflow)
-          title: "🚀 Merge test into main - v${{ github.run_number }}"
+          branch: dev
+          base: test  # Branche cible de la PR (à ajuster selon votre workflow)
+          title: "🚀 Merge dev into test - v${{ github.run_number }}"
           body: |
             ## Changements proposés
             
@@ -144,5 +144,5 @@ jobs:
             *PR créée automatiquement par GitHub Actions*
           labels: |
             automated-pr
-            test-to-main
+            dev-to-test
           draft: false  # Mettre à true si vous voulez créer une PR en brouillon
