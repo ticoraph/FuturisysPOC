@@ -29,7 +29,11 @@ class PredictRequest(BaseModel):
     Schéma pour les données d'entrée de la prédiction.
     Attend une liste de valeurs numériques (features) pour faire la prédiction.
     """
-    features: List[float] = Field(..., examples=[[0.1, 1.2, 3.4]])
+    features: List[float] = Field(
+        ...,
+        min_length=4,
+        examples=[[1, 2, 3, 4]]
+    )
 
 class PredictResponse(BaseModel):
     """

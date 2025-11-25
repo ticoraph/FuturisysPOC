@@ -1,0 +1,148 @@
+# Workflow déclenché lors d'un push sur la branche dev
+name: Actions Push Branch DEV
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  # Job pour créer automatiquement un tag
+  create-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Permission nécessaire pour créer des releases
+    steps:
+      - uses: actions/checkout@v4  # Version mise à jour
+
+      - name: Create Tag
+        run: |
+          # Configuration de l'identité Git pour les commits
+          git config --local user.email "tico@outlook.fr"
+          git config --local user.name "tico"
+          # Création d'un tag annoté basé sur le numéro d'exécution du workflow
+          git tag -a "v${{ github.run_number }}" -m "Release v${{ github.run_number }}"
+          # Push du tag vers le dépôt distant
+          git push origin "v${{ github.run_number }}"
+
+  # Job pour vérifier la qualité du code Python avec Ruff
+  linting-code:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Set up Python
+      # Installation de Python (dernière version 3.x)
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install the code linting and formatting tool Ruff
+      # Installation de Ruff via pipx pour l'analyse du code
+      run: pipx install ruff
+
+    - name: Lint code with Ruff
+      # Vérification des erreurs de code (linting) avec format de sortie GitHub
+      run: ruff check --output-format=github --target-version=py39
+
+    - name: Check code formatting with Ruff
+      # Vérification du formatage du code (affiche les différences sans modifier)
+      run: ruff format --diff --target-version=py39
+      # Continue même en cas d'échec pour ne pas bloquer le workflow
+      continue-on-error: true
+
+  # Job pour exécuter les tests unitaires avec pytest
+  tests-api:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Set up Python
+      # Installation de Python (dernière version 3.x)
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Create .env file
+      run: |
+        echo "postgres_user=${{ vars.POSTGRES_USER }}" >> .env
+        echo "postgres_user=${{ vars.POSTGRES_USER }}"
+        echo "postgres_user_password=${{ secrets.POSTGRES_USER_PASSWORD }}" >> .env
+        echo "supabase_host=${{ vars.SUPABASE_HOST }}" >> .env
+        echo "supabase_host=${{ vars.SUPABASE_HOST }}"
+        echo "postgres_port=${{ vars.POSTGRES_PORT }}" >> .env
+        echo "postgres_port=${{ vars.POSTGRES_PORT }}"
+        echo "postgres_db_name=${{ vars.POSTGRES_DB_NAME }}" >> .env
+        echo "postgres_db_name=${{ vars.POSTGRES_DB_NAME }}"
+        echo "model_path=${{ vars.MODEL_PATH }}" >> .env
+        echo "model_path=${{ vars.MODEL_PATH }}"
+
+    - name: Install dependencies
+      run: |
+        # Mise à jour de pip
+        python -m pip install --upgrade pip
+        # Installation des dépendances du projet depuis requirements.txt
+        pip install -r requirements.txt
+
+    - name: Test with pytest
+      run: |
+        # Exécution des tests avec génération de rapports de couverture (XML et HTML)
+        pytest test/test_api.py --cov=src --cov-report=html
+
+  # Job pour créer une Pull Request vers la branche test
+  create-pull-request:
+    runs-on: ubuntu-latest
+    # Attend que les jobs de linting et tests soient terminés avec succès
+    needs: [linting-code, tests-api]
+    permissions:
+      contents: write
+      pull-requests: write  # Permission nécessaire pour créer des PRs
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0  # Récupère tout l'historique pour pouvoir accéder aux branches
+
+      - name: Checkout test branch
+        run: |
+          # Récupère la branche test depuis le dépôt distant
+          git fetch origin test:test || echo "Branch test does not exist yet"
+          # Bascule sur la branche test (la crée si elle n'existe pas)
+          git checkout test || git checkout -b test
+
+      - name: Merge dev into test
+        run: |
+          # Configure Git pour les commits
+          git config --local user.email "tico@outlook.fr"
+          git config --local user.name "tico"
+          # Merge de dev dans test
+          git merge origin/dev --no-ff -m "Merge dev into test - Run #${{ github.run_number }}"
+          # Push des changements vers test
+          git push origin test
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: dev
+          base: test  # Branche cible de la PR (à ajuster selon votre workflow)
+          title: "🚀 Merge dev into test - v${{ github.run_number }}"
+          body: |
+            ## Changements proposés
+            
+            Cette PR contient les changements de la branche `dev` qui ont été mergés dans `test`.
+            
+            **Tag de version:** v${{ github.run_number }}
+            
+            ### Vérifications effectuées
+            - ✅ Linting avec Ruff
+            - ✅ Tests unitaires avec pytest
+            
+            ### Commits inclus
+            ${{ github.event.head_commit.message }}
+            
+            ---
+            *PR créée automatiquement par GitHub Actions*
+          labels: |
+            automated-pr
+            dev-to-test
+          draft: false  # Mettre à true si vous voulez créer une PR en brouillon
