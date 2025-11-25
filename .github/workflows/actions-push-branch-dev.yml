@@ -52,7 +52,7 @@ jobs:
       continue-on-error: true
 
   # Job pour exécuter les tests unitaires avec pytest
-  tests-pytest:
+  tests-api:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
@@ -88,3 +88,61 @@ jobs:
       run: |
         # Exécution des tests avec génération de rapports de couverture (XML et HTML)
         pytest test/test_api.py --cov=src --cov-report=html
+
+  # Job pour créer une Pull Request vers la branche test
+  create-pull-request:
+    runs-on: ubuntu-latest
+    # Attend que les jobs de linting et tests soient terminés avec succès
+    needs: [linting-code, tests-api]
+    permissions:
+      contents: write
+      pull-requests: write  # Permission nécessaire pour créer des PRs
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0  # Récupère tout l'historique pour pouvoir accéder aux branches
+
+      - name: Checkout test branch
+        run: |
+          # Récupère la branche test depuis le dépôt distant
+          git fetch origin test:test || echo "Branch test does not exist yet"
+          # Bascule sur la branche test (la crée si elle n'existe pas)
+          git checkout test || git checkout -b test
+
+      - name: Merge dev into test
+        run: |
+          # Configure Git pour les commits
+          git config --local user.email "tico@outlook.fr"
+          git config --local user.name "tico"
+          # Merge de dev dans test
+          git merge origin/dev --no-ff -m "Merge dev into test - Run #${{ github.run_number }}"
+          # Push des changements vers test
+          git push origin test
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: test
+          base: main  # Branche cible de la PR (à ajuster selon votre workflow)
+          title: "🚀 Merge test into main - v${{ github.run_number }}"
+          body: |
+            ## Changements proposés
+            
+            Cette PR contient les changements de la branche `dev` qui ont été mergés dans `test`.
+            
+            **Tag de version:** v${{ github.run_number }}
+            
+            ### Vérifications effectuées
+            - ✅ Linting avec Ruff
+            - ✅ Tests unitaires avec pytest
+            
+            ### Commits inclus
+            ${{ github.event.head_commit.message }}
+            
+            ---
+            *PR créée automatiquement par GitHub Actions*
+          labels: |
+            automated-pr
+            test-to-main
+          draft: false  # Mettre à true si vous voulez créer une PR en brouillon
