@@ -9,7 +9,7 @@ load_dotenv()
 
 # Récupère le chemin du modèle depuis les variables d'environnement
 # Si MODEL_PATH n'existe pas, utilise "model.joblib" par défaut
-model_path = os.getenv("model_path", "model.joblib")
+model_path = os.getenv("model_path")
 print(f"Loading model from {model_path}")
 
 # Affichage d'informations de débogage pour vérifier les chemins
