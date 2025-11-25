@@ -1,0 +1,44 @@
+# Workflow déclenché lors d'un push sur la branche test
+name: Actions Push Branch TEST
+
+on:
+  push:
+    branches:
+      - test
+
+permissions:
+  contents: write
+  pull-requests: write  # Permission nécessaire pour créer des PRs
+
+jobs:
+  # Job pour créer une Pull Request vers la branche MAIN
+  create-pull-request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout test branch
+      - uses: actions/checkout@v5
+        with:
+          ref: test
+
+      - name: Create or Update Pull Request test → main (production)
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          head: test
+          base: main  # Branche cible de la PR
+          update-existing: true
+          title: "🚀 Merge test into main - v${{ github.run_number }}"
+          body: |
+            ## Changements proposés
+            **Tag de version:** v${{ github.run_number }}
+
+            ### Commits inclus
+            ${{ github.event.head_commit.message }}
+            
+            ---
+            *PR créée automatiquement par GitHub Actions*
+          labels: |
+            automated-pr
+            test-to-main
+          draft: false  # Mettre à true si vous voulez créer une PR en brouillon
