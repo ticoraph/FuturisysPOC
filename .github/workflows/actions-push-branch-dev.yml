@@ -124,13 +124,11 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: dev
-          base: test  # Branche cible de la PR (à ajuster selon votre workflow)
+          base: test  # Branche cible de la PR
           title: "🚀 Merge dev into test - v${{ github.run_number }}"
           body: |
             ## Changements proposés
-            
             Cette PR contient les changements de la branche `dev` qui ont été mergés dans `test`.
-            
             **Tag de version:** v${{ github.run_number }}
             
             ### Vérifications effectuées
