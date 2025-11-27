@@ -39,7 +39,7 @@ jobs:
 
     - name: Install the code linting and formatting tool Ruff
       # Installation de Ruff via pipx pour l'analyse du code
-      run: pipx install ruff
+      run: pip install ruff
 
     - name: Lint code with Ruff
       # Vérification des erreurs de code (linting) avec format de sortie GitHub
@@ -89,7 +89,7 @@ jobs:
         # Exécution des tests avec génération de rapports de couverture (XML et HTML)
         pytest test/test_api.py --cov=src --cov-report=html
 
-  # Job pour créer une Pull Request vers la branche test
+  # Job pour créer une Pull Request vers la branche main
   create-pull-request:
     runs-on: ubuntu-latest
     # Attend que les jobs de linting et tests soient terminés avec succès
@@ -101,23 +101,25 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0  # Récupère tout l'historique pour pouvoir accéder aux branches
-
-      - name: Checkout test branch
+      - name: Ensure branches fetched
         run: |
-          # Récupère la branche test depuis le dépôt distant
-          git fetch origin test:test || echo "Branch test does not exist yet"
-          # Bascule sur la branche test (la crée si elle n'existe pas)
-          git checkout test || git checkout -b test
-
-      - name: Merge dev into test
+          git fetch origin dev || true
+          git fetch origin test || true
+      - name: Create or checkout test branch and merge dev
         run: |
-          # Configure Git pour les commits
           git config --local user.email "tico@outlook.fr"
           git config --local user.name "tico"
-          # Merge de dev dans test
-          git merge origin/dev --no-ff -m "Merge dev into test - Run #${{ github.run_number }}"
-          # Push des changements vers test
-          git push origin test
+          # Si la branche test existe à distance, on la récupère et on la checkout
+          if git ls-remote --exit-code --heads origin test; then
+            git fetch origin test:test
+            git checkout test
+          else
+            git checkout -b test
+          fi
+          # Merge de dev (assure que origin/dev est présent)
+          git merge origin/dev --no-ff -m "Merge dev into test - Run #${{ github.run_number }}" || (echo "Merge conflict or nothing to merge" && exit 1)
+          # Push la branche test et crée le suivi si nécessaire
+          git push --set-upstream origin test
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
